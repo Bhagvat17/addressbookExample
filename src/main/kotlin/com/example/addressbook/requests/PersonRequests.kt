@@ -16,7 +16,8 @@ data class AddPersonRequest(
     val firstName: String,
     val lastName: String,
     val phoneNumbers: List<PhoneNumberRequest>,
-    val addresses: List<AddressRequest>
+    val addresses: List<AddressRequest>,
+    val emails: List<EmailRequest>
 )
 
 data class UpdatePersonRequest(
@@ -24,7 +25,8 @@ data class UpdatePersonRequest(
     val firstName: String,
     val lastName: String,
     val phoneNumbers: List<PhoneNumberRequest>,
-    val addresses: List<AddressRequest>
+    val addresses: List<AddressRequest>,
+    val emails: List<EmailRequest>
 )
 
 data class RemovePersonRequest(

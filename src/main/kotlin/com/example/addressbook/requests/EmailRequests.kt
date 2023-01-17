@@ -9,7 +9,6 @@ enum class EmailType {
 }
 
 data class EmailRequest(
-    val id: EmailId,
     val type: EmailType,
     val email: String,
 

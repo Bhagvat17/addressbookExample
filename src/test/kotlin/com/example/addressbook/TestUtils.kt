@@ -19,13 +19,16 @@ fun getPersonCreateRequest(
             state = "Gujarat",
             zipcode = "385421"
         )
+    ),
+    emails: List<EmailRequest> = listOf(
     )
 ) =
     AddPersonRequest(
         firstName = firstName,
         lastName = lastName,
         phoneNumbers = phones,
-        addresses = addresses
+        addresses = addresses,
+        emails=emails
     )
 
 fun getPersonUpdateRequest(
@@ -49,6 +52,12 @@ fun getPersonUpdateRequest(
             state = "Gujarat_UPDATED",
             zipcode = "385421_UPDATED"
         )
+    ),
+    emails: List<EmailRequest> = listOf(
+        EmailRequest(
+            type = EmailType.Home,
+            email= "abc@email.com"
+        )
     )
 ) =
     UpdatePersonRequest(
@@ -56,5 +65,6 @@ fun getPersonUpdateRequest(
         firstName = firstName,
         lastName = lastName,
         phoneNumbers = phoneNumbers,
-        addresses = addresses
+        addresses = addresses,
+        emails= emails
     )

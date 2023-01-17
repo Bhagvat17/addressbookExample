@@ -1,16 +1,11 @@
 package com.example.addressbook.commands
 
 import PhoneNumberResponses
-import com.example.addressbook.Address
-import com.example.addressbook.Person
-import com.example.addressbook.PersonId
-import com.example.addressbook.PhoneNumber
+import com.example.addressbook.*
 import com.example.addressbook.repo.*
-import com.example.addressbook.requests.AddPersonRequest
-import com.example.addressbook.requests.AddressRequest
-import com.example.addressbook.requests.PhoneNumberRequest
-import com.example.addressbook.requests.UpdatePersonRequest
+import com.example.addressbook.requests.*
 import com.example.addressbook.responses.AddressResponses
+import com.example.addressbook.responses.EmailResponses
 import com.example.addressbook.responses.PersonResponse
 import com.example.addressbook.storages.PersonStorage
 import java.util.*
@@ -66,6 +61,20 @@ fun PhoneNumber.toPhoneNumberResponse() =
         phone= this@toPhoneNumberResponse.phone,
     )
 
+fun EmailRequest.toEmail() =
+    Email(
+        id = UUID.randomUUID(),
+        type = this@toEmail.type,
+        email = this@toEmail.email,
+    )
+
+fun Email.toEmailResponse() =
+    EmailResponses(
+        id = this@toEmailResponse.id,
+        type = this@toEmailResponse.type,
+        email= this@toEmailResponse.email,
+    )
+
 class AddPersonCommand(
     private val storage: PersonStorage,
     private val request: AddPersonRequest
@@ -77,10 +86,17 @@ class AddPersonCommand(
             PersonPhoneNumberRepo.mapPersonWithPhoneNumber(person.id, phoneNumber.id)
             PhoneNumberRepo.addPhoneNumber(phoneNumber).toPhoneNumberResponse()
         }
+
         val addressesResponse = request.addresses.map { addressRequest ->
             val address = addressRequest.toAddress()
             PersonAddressRepo.mapPersonWithAddress(person.id, address.id)
             AddressRepo.addAddress(address).toAddressResponse()
+        }
+
+        val emailsResponse = request.emails.map { emailRequest ->
+            val email = emailRequest.toEmail()
+            PersonEmailRepo.mapPersonWithEmail(person.id, email.id)
+            EmailRepo.addEmail(email).toEmailResponse()
         }
 
         val personDetail = PersonRepo.addPerson(storage, person)
@@ -91,6 +107,7 @@ class AddPersonCommand(
             lastName = personDetail.lastName,
             phoneNumbers = phoneNumbersResponse,
             addresses = addressesResponse,
+            emails= emailsResponse
         )
     }
 }
@@ -127,6 +144,19 @@ class UpdatePersonCommand(
             AddressRepo.addAddress(address).toAddressResponse()
         }
 
+        PersonEmailRepo.removeAllEmailByPersonId(person.id)
+        val emailIdsTobeRemoved = PersonEmailRepo.getAllEmailIdsByPersonId(person.id)
+        emailIdsTobeRemoved.forEach {
+            EmailRepo.removeEmail(it)
+        }
+
+
+        val emailsResponse = request.emails.map { emailRequest ->
+            val email = emailRequest.toEmail()
+            PersonEmailRepo.mapPersonWithEmail(person.id, email.id)
+            EmailRepo.addEmail(email).toEmailResponse()
+        }
+
 
         val personDetail = PersonRepo.updatePerson(storage, person)
         return PersonResponse(
@@ -134,7 +164,8 @@ class UpdatePersonCommand(
             firstName = personDetail.firstName,
             lastName = personDetail.lastName,
             phoneNumbers = phoneNumbersResponse,
-            addresses = addressesResponse
+            addresses = addressesResponse,
+            emails = emailsResponse
         )
     }
 }
@@ -147,6 +178,7 @@ class FetchPersonCommand(
         val person = PersonRepo.fetchPerson(storage, personId)
         val phoneNumberIds = PersonPhoneNumberRepo.getAllPhoneNumberIdsByPersonId(person.id)
         val addressIds = PersonAddressRepo.getAllAddressIdsByPersonId(person.id)
+        val emailIds = PersonEmailRepo.getAllEmailIdsByPersonId(person.id)
 
         val phoneNumbers = phoneNumberIds.map {
             PhoneNumberRepo.fetchPhoneNumber(it).toPhoneNumberResponse()
@@ -156,12 +188,17 @@ class FetchPersonCommand(
             AddressRepo.fetchAddress(it).toAddressResponse()
         }
 
+        val emails = emailIds.map {
+            EmailRepo.fetchEmail(it).toEmailResponse()
+        }
+
         return PersonResponse(
             id = person.id,
             firstName = person.firstName,
             lastName = person.lastName,
             phoneNumbers= phoneNumbers,
-            addresses = addresses
+            addresses = addresses,
+            emails = emails
         )
     }
 }

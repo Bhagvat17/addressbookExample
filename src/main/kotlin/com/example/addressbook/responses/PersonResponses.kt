@@ -8,5 +8,6 @@ data class PersonResponse(
     val firstName: String,
     val lastName: String,
     val phoneNumbers: List<PhoneNumberResponses>,
-    val addresses: List<AddressResponses>
+    val addresses: List<AddressResponses>,
+    val emails: List<EmailResponses>
 )
