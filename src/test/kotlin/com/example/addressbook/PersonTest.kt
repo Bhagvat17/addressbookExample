@@ -19,6 +19,8 @@ class PersonTest {
         Assertions.assertEquals("BhagvatSinh", personResponse.firstName)
         Assertions.assertEquals("Jadeja", personResponse.lastName)
         Assertions.assertTrue(personResponse.addresses.size == 1)
+        val phoneNumber = personResponse.phoneNumbers.first()
+        Assertions.assertEquals("99999999",phoneNumber.phone)
 
         val address = personResponse.addresses.first()
 
@@ -43,7 +45,12 @@ class PersonTest {
 
         Assertions.assertEquals("BhagvatSinh_UPDATED", updatedPersonResponse.firstName)
         Assertions.assertEquals("Jadeja_UPDATED", updatedPersonResponse.lastName)
+        Assertions.assertTrue(updatedPersonResponse.phoneNumbers.size==2)
         Assertions.assertTrue(updatedPersonResponse.addresses.size == 1)
+
+        val phoneNumber = updatedPersonResponse.phoneNumbers.first()
+        Assertions.assertEquals("99999999",phoneNumber.phone)
+
 
         val address = updatedPersonResponse.addresses.first()
 

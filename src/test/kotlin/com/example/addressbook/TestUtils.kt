@@ -5,9 +5,10 @@ import com.example.addressbook.requests.*
 fun getPersonCreateRequest(
     firstName: String = "BhagvatSinh",
     lastName: String = "Jadeja",
-    phones: List<Phone> = listOf(
-        Phone(PhoneType.Home, "99999999"),
-        Phone(PhoneType.Office, "888888888")
+    phones: List<PhoneNumberRequest> = listOf(
+        PhoneNumberRequest(
+            type=PhoneNumberType.Home,
+            "99999999"),
     ),
     addresses: List<AddressRequest> = listOf(
         AddressRequest(
@@ -23,7 +24,7 @@ fun getPersonCreateRequest(
     AddPersonRequest(
         firstName = firstName,
         lastName = lastName,
-        phones = phones,
+        phoneNumbers = phones,
         addresses = addresses
     )
 
@@ -31,9 +32,13 @@ fun getPersonUpdateRequest(
     id: PersonId,
     firstName: String = "BhagvatSinh_UPDATED",
     lastName: String = "Jadeja_UPDATED",
-    phones: List<Phone> = listOf(
-        Phone(PhoneType.Home, "99999999_UPDATED"),
-        Phone(PhoneType.Office, "888888888_UPDATED")
+    phoneNumbers: List<PhoneNumberRequest> = listOf(
+        PhoneNumberRequest(
+            type=PhoneNumberType.Home,
+            "99999999"),
+        PhoneNumberRequest(
+            type=PhoneNumberType.Office,
+            "888888888888")
     ),
     addresses: List<AddressRequest> = listOf(
         AddressRequest(
@@ -50,6 +55,6 @@ fun getPersonUpdateRequest(
         id = id,
         firstName = firstName,
         lastName = lastName,
-        phones = phones,
+        phoneNumbers = phoneNumbers,
         addresses = addresses
     )

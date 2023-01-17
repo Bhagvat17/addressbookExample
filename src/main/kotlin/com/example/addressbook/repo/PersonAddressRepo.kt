@@ -1,7 +1,6 @@
 package com.example.addressbook.repo
 
 import com.example.addressbook.AddressId
-import com.example.addressbook.Person
 import com.example.addressbook.PersonId
 import com.example.addressbook.storages.AddressStorage
 import com.example.addressbook.storages.PersonAddressMappingStorage

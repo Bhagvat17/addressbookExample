@@ -2,7 +2,6 @@ package com.example.addressbook.storages
 
 import com.example.addressbook.Address
 import com.example.addressbook.AddressId
-import com.example.addressbook.PersonId
 import java.lang.Exception
 
 object AddressStorage {
@@ -24,7 +23,13 @@ object AddressStorage {
 
     fun fetchAddress(addressId: AddressId): Address = addresses[addressId]!!
 
-    fun removeAddress(addressId: AddressId): Address = addresses.remove(addressId)!!
+    fun removeAddress(addressId: AddressId): Address {
+        return if (addressId in addresses) {
+            addresses.remove(addressId)!!
+        } else {
+            throw Exception("Address not found with id: $addressId")
+        }
+    }
 
     fun listAddresses(): List<Address> = addresses.values.toList()
 }

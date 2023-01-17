@@ -15,7 +15,7 @@ data class Phone(
 data class AddPersonRequest(
     val firstName: String,
     val lastName: String,
-    val phones: List<Phone>,
+    val phoneNumbers: List<PhoneNumberRequest>,
     val addresses: List<AddressRequest>
 )
 
@@ -23,7 +23,7 @@ data class UpdatePersonRequest(
     val id: UUID,
     val firstName: String,
     val lastName: String,
-    val phones: List<Phone>,
+    val phoneNumbers: List<PhoneNumberRequest>,
     val addresses: List<AddressRequest>
 )
 

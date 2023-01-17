@@ -1,12 +1,12 @@
 package com.example.addressbook.responses
 
+import PhoneNumberResponses
 import com.example.addressbook.PersonId
-import com.example.addressbook.requests.Phone
 
 data class PersonResponse(
     val id: PersonId,
     val firstName: String,
     val lastName: String,
-//    val phones: List<Phone>,
+    val phoneNumbers: List<PhoneNumberResponses>,
     val addresses: List<AddressResponses>
 )
