@@ -22,6 +22,7 @@ class PersonTest {
         val phoneNumber = personResponse.phoneNumbers.first()
         Assertions.assertEquals("99999999",phoneNumber.phone)
         Assertions.assertTrue(personResponse.emails.size == 0)
+        Assertions.assertTrue(personResponse.groups.size == 0)
 
         val address = personResponse.addresses.first()
 
@@ -49,6 +50,7 @@ class PersonTest {
         Assertions.assertTrue(updatedPersonResponse.phoneNumbers.size==2)
         Assertions.assertTrue(updatedPersonResponse.addresses.size == 1)
         Assertions.assertTrue(updatedPersonResponse.emails.size == 1)
+        Assertions.assertTrue(updatedPersonResponse.groups.size == 2)
 
         val phoneNumber = updatedPersonResponse.phoneNumbers.first()
         Assertions.assertEquals("99999999",phoneNumber.phone)

@@ -6,6 +6,7 @@ import com.example.addressbook.repo.*
 import com.example.addressbook.requests.*
 import com.example.addressbook.responses.AddressResponses
 import com.example.addressbook.responses.EmailResponses
+import com.example.addressbook.responses.GroupResponses
 import com.example.addressbook.responses.PersonResponse
 import com.example.addressbook.storages.PersonStorage
 import java.util.*
@@ -75,6 +76,18 @@ fun Email.toEmailResponse() =
         email= this@toEmailResponse.email,
     )
 
+fun GroupRequest.toGroup() =
+    Group(
+        id = UUID.randomUUID(),
+        groupName = this@toGroup.groupName,
+    )
+
+fun Group.toGroupResponse() =
+    GroupResponses(
+        id = this@toGroupResponse.id,
+        groupName = this@toGroupResponse.groupName,
+    )
+
 class AddPersonCommand(
     private val storage: PersonStorage,
     private val request: AddPersonRequest
@@ -99,6 +112,12 @@ class AddPersonCommand(
             EmailRepo.addEmail(email).toEmailResponse()
         }
 
+        val groupsResponse = request.groups.map { groupRequest ->
+            val group = groupRequest.toGroup()
+            PersonGroupRepo.mapPersonWithGroup(person.id, group.id)
+            GroupRepo.addGroup(group).toGroupResponse()
+        }
+
         val personDetail = PersonRepo.addPerson(storage, person)
 
         return PersonResponse(
@@ -107,7 +126,8 @@ class AddPersonCommand(
             lastName = personDetail.lastName,
             phoneNumbers = phoneNumbersResponse,
             addresses = addressesResponse,
-            emails= emailsResponse
+            emails= emailsResponse,
+            groups = groupsResponse
         )
     }
 }
@@ -157,6 +177,19 @@ class UpdatePersonCommand(
             EmailRepo.addEmail(email).toEmailResponse()
         }
 
+        PersonGroupRepo.removeAllGroupByPersonId(person.id)
+        val groupIdsTobeRemoved = PersonGroupRepo.getAllGroupIdsByPersonId(person.id)
+        groupIdsTobeRemoved.forEach {
+            GroupRepo.removeGroup(it)
+        }
+
+
+        val groupsResponse = request.groups.map { groupRequest ->
+            val group = groupRequest.toGroup()
+            PersonGroupRepo.mapPersonWithGroup(person.id, group.id)
+            GroupRepo.addGroup(group).toGroupResponse()
+        }
+
 
         val personDetail = PersonRepo.updatePerson(storage, person)
         return PersonResponse(
@@ -165,7 +198,8 @@ class UpdatePersonCommand(
             lastName = personDetail.lastName,
             phoneNumbers = phoneNumbersResponse,
             addresses = addressesResponse,
-            emails = emailsResponse
+            emails = emailsResponse,
+            groups = groupsResponse
         )
     }
 }
@@ -179,6 +213,7 @@ class FetchPersonCommand(
         val phoneNumberIds = PersonPhoneNumberRepo.getAllPhoneNumberIdsByPersonId(person.id)
         val addressIds = PersonAddressRepo.getAllAddressIdsByPersonId(person.id)
         val emailIds = PersonEmailRepo.getAllEmailIdsByPersonId(person.id)
+        val groupIds = PersonGroupRepo.getAllGroupIdsByPersonId(person.id)
 
         val phoneNumbers = phoneNumberIds.map {
             PhoneNumberRepo.fetchPhoneNumber(it).toPhoneNumberResponse()
@@ -192,13 +227,18 @@ class FetchPersonCommand(
             EmailRepo.fetchEmail(it).toEmailResponse()
         }
 
+        val groups = groupIds.map{
+            GroupRepo.fetchGroup(it).toGroupResponse()
+        }
+
         return PersonResponse(
             id = person.id,
             firstName = person.firstName,
             lastName = person.lastName,
             phoneNumbers= phoneNumbers,
             addresses = addresses,
-            emails = emails
+            emails = emails,
+            groups = groups
         )
     }
 }

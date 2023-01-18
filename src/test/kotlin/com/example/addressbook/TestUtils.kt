@@ -21,6 +21,8 @@ fun getPersonCreateRequest(
         )
     ),
     emails: List<EmailRequest> = listOf(
+    ),
+    groups: List<GroupRequest> = listOf(
     )
 ) =
     AddPersonRequest(
@@ -28,7 +30,8 @@ fun getPersonCreateRequest(
         lastName = lastName,
         phoneNumbers = phones,
         addresses = addresses,
-        emails=emails
+        emails=emails,
+        groups=groups
     )
 
 fun getPersonUpdateRequest(
@@ -58,7 +61,15 @@ fun getPersonUpdateRequest(
             type = EmailType.Home,
             email= "abc@email.com"
         )
-    )
+    ),
+    groups: List<GroupRequest> = listOf(
+        GroupRequest(
+            groupName = "Friend"
+        ),
+        GroupRequest(
+            groupName = "Work"
+        )
+    ),
 ) =
     UpdatePersonRequest(
         id = id,
@@ -66,5 +77,6 @@ fun getPersonUpdateRequest(
         lastName = lastName,
         phoneNumbers = phoneNumbers,
         addresses = addresses,
-        emails= emails
+        emails= emails,
+        groups = groups
     )

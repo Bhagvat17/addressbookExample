@@ -11,6 +11,13 @@ data class Person(
     val lastName: String
 )
 
+typealias PhoneNumberId = UUID
+data class PhoneNumber(
+    val id: PhoneNumberId,
+    val type: PhoneNumberType,
+    val phone: String,
+)
+
 typealias AddressId = UUID
 
 data class Address(
@@ -31,9 +38,10 @@ data class Email(
 
     )
 
-typealias PhoneNumberId = UUID
-data class PhoneNumber(
-    val id: PhoneNumberId,
-    val type: PhoneNumberType,
-    val phone: String,
-    )
+
+typealias GroupId = UUID
+
+data class Group(
+    val id: GroupId,
+    val groupName: String,
+)
