@@ -26,6 +26,13 @@ fun UpdatePersonRequest.toPerson() =
         lastName = this@toPerson.lastName
     )
 
+fun RemovePersonRequest.toPerson() = Person(
+    id = this@toPerson.id,
+    firstName = this@toPerson.firstName,
+    lastName = this@toPerson.lastName,
+)
+
+
 fun AddressRequest.toAddress() =
     Address(
         id = UUID.randomUUID(),
@@ -206,7 +213,7 @@ class UpdatePersonCommand(
 
 class FetchPersonCommand(
     private val storage: PersonStorage,
-    private val personId: PersonId
+    private val personId: PersonId,
 ) : Command {
     override fun execute(): PersonResponse {
         val person = PersonRepo.fetchPerson(storage, personId)
@@ -242,6 +249,42 @@ class FetchPersonCommand(
         )
     }
 }
+
+
+class RemovePersonCommand(
+    private val storage: PersonStorage,
+    private val personId: PersonId,
+) : Command {
+    override fun execute(): Any {
+        PersonPhoneNumberRepo.removeAllPhoneNumberByPersonId(personId)
+        val phoneNumberIdsTobeRemoved = PersonPhoneNumberRepo.getAllPhoneNumberIdsByPersonId(personId)
+        phoneNumberIdsTobeRemoved.forEach {
+            PhoneNumberRepo.removePhoneNumber(it)
+        }
+
+
+        PersonAddressRepo.removeAllAddressByPersonId(personId)
+        val addressIdsTobeRemoved = PersonAddressRepo.getAllAddressIdsByPersonId(personId)
+        addressIdsTobeRemoved.forEach {
+            AddressRepo.removeAddress(it)
+        }
+
+        PersonEmailRepo.removeAllEmailByPersonId(personId)
+        val emailIdsTobeRemoved = PersonEmailRepo.getAllEmailIdsByPersonId(personId)
+        emailIdsTobeRemoved.forEach {
+            EmailRepo.removeEmail(it)
+        }
+
+        PersonGroupRepo.removeAllGroupByPersonId(personId)
+        val groupIdsTobeRemoved = PersonGroupRepo.getAllGroupIdsByPersonId(personId)
+        groupIdsTobeRemoved.forEach {
+            GroupRepo.removeGroup(it)
+        }
+        val personDetail = PersonRepo.removePerson(storage, personId)
+        return " contact deleted"
+    }
+}
+
 
 
 

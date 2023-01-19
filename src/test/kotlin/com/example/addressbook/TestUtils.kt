@@ -80,3 +80,33 @@ fun getPersonUpdateRequest(
         emails= emails,
         groups = groups
     )
+
+fun getPersonRemoveRequest(
+    id: PersonId,
+    firstName: String = "BhagvatSinh",
+    lastName: String = "Jadeja",
+    phoneNumbers: List<PhoneNumberRequest> = listOf(
+        PhoneNumberRequest(
+            type=PhoneNumberType.Home,
+            "99999999"),
+    ),
+    addresses: List<AddressRequest> = listOf(
+        AddressRequest(
+            type = AddressType.Home,
+            addressLine1 = "B-308",
+            addressLine2 = "Some complex",
+            city = "Vadodara",
+            state = "Gujarat",
+            zipcode = "385421"
+        )
+    ),
+    emails: List<EmailRequest> = listOf(
+    ),
+    groups: List<GroupRequest> = listOf(
+    )
+) =
+    RemovePersonRequest(
+        id = id,
+        firstName=firstName,
+        lastName= lastName,
+    )

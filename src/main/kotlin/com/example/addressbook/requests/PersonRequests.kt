@@ -32,7 +32,9 @@ data class UpdatePersonRequest(
 )
 
 data class RemovePersonRequest(
-    val id: UUID
+    val id: UUID,
+    val firstName: String,
+    val lastName: String
 )
 
 data class FetchPersonRequest(

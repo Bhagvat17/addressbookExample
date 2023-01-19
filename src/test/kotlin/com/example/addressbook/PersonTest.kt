@@ -2,6 +2,7 @@ package com.example.addressbook
 
 import com.example.addressbook.commands.AddPersonCommand
 import com.example.addressbook.commands.FetchPersonCommand
+import com.example.addressbook.commands.RemovePersonCommand
 import com.example.addressbook.commands.UpdatePersonCommand
 import com.example.addressbook.storages.PersonInMemoryStorage
 import org.junit.jupiter.api.Assertions
@@ -103,5 +104,32 @@ class PersonTest {
         Assertions.assertEquals("Vadodara", address.city)
         Assertions.assertEquals("Gujarat", address.state)
         Assertions.assertEquals("385421", address.zipcode)
+    }
+
+    @Test
+    fun `remove person`(): Unit {
+        val storage = PersonInMemoryStorage()
+
+        val personCreateRequest = getPersonCreateRequest()
+        val commandAddPerson = AddPersonCommand(storage, personCreateRequest)
+        val personResponse = commandAddPerson.execute()
+
+        Assertions.assertEquals("BhagvatSinh", personResponse.firstName)
+        Assertions.assertEquals("Jadeja", personResponse.lastName)
+        Assertions.assertTrue(personResponse.addresses.size == 1)
+        val phoneNumber = personResponse.phoneNumbers.first()
+        Assertions.assertEquals("99999999",phoneNumber.phone)
+        Assertions.assertTrue(personResponse.emails.size == 0)
+        Assertions.assertTrue(personResponse.groups.size == 0)
+
+        RemovePersonCommand(storage, personResponse.id).execute()
+        val cmdFetchPerson = FetchPersonCommand(storage, personResponse.id)
+        val fetchedPerson = cmdFetchPerson.execute()
+
+        Assertions.assertEquals("BhagvatSinh", fetchedPerson.firstName)
+        Assertions.assertEquals("Jadeja", fetchedPerson.lastName)
+        Assertions.assertEquals(1, fetchedPerson.addresses.size)
+
+//        Assertions.assertEquals("", personResponse.firstName)
     }
 }
