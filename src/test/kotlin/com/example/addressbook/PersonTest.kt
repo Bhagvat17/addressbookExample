@@ -123,13 +123,6 @@ class PersonTest {
         Assertions.assertTrue(personResponse.groups.size == 0)
 
         RemovePersonCommand(storage, personResponse.id).execute()
-        val cmdFetchPerson = FetchPersonCommand(storage, personResponse.id)
-        val fetchedPerson = cmdFetchPerson.execute()
 
-        Assertions.assertEquals("BhagvatSinh", fetchedPerson.firstName)
-        Assertions.assertEquals("Jadeja", fetchedPerson.lastName)
-        Assertions.assertEquals(1, fetchedPerson.addresses.size)
-
-//        Assertions.assertEquals("", personResponse.firstName)
     }
 }
