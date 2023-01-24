@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.example.addressbook.PersonTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-01-19T09:05:37" hostname="bhagvatj-ThinkPad-E14-Gen-4" time="0.025">
+<testsuite name="com.example.addressbook.PersonTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-01-24T09:27:44" hostname="bhagvatj-ThinkPad-E14-Gen-4" time="0.013">
   <properties/>
-  <testcase name="remove person()" classname="com.example.addressbook.PersonTest" time="0.025"/>
-  <system-out><![CDATA[]]></system-out>
+  <testcase name="listPerson()" classname="com.example.addressbook.PersonTest" time="0.013"/>
+  <system-out><![CDATA[com.example.addressbook.commands.ListPersonCommand@2b30a42c
+]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

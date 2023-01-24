@@ -26,5 +26,5 @@ class PersonInMemoryStorage: PersonStorage {
 
     override fun removePerson(personId: PersonId): Person = persons.remove(personId)!!
 
-    override fun listPersons(): List<Person> = persons.values.toList()
+    override fun listPersons(): List<Person> = persons.values.toList() as List<Person>
 }

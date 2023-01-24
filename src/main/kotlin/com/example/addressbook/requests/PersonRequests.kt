@@ -2,16 +2,6 @@ package com.example.addressbook.requests
 
 import java.util.UUID
 
-enum class PhoneType {
-    Home,
-    Office
-}
-
-data class Phone(
-    val type: PhoneType,
-    val number: String
-)
-
 data class AddPersonRequest(
     val firstName: String,
     val lastName: String,
@@ -41,4 +31,4 @@ data class FetchPersonRequest(
     val id: UUID
 )
 
-class ListPersonsRequest()
+class ListPersonRequest()

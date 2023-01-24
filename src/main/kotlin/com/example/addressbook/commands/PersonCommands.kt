@@ -8,6 +8,8 @@ import com.example.addressbook.responses.AddressResponses
 import com.example.addressbook.responses.EmailResponses
 import com.example.addressbook.responses.GroupResponses
 import com.example.addressbook.responses.PersonResponse
+import com.example.addressbook.storages.PersonDatabaseStorage
+import com.example.addressbook.storages.PersonInMemoryStorage
 import com.example.addressbook.storages.PersonStorage
 import java.util.*
 
@@ -25,6 +27,8 @@ fun UpdatePersonRequest.toPerson() =
         firstName = this@toPerson.firstName,
         lastName = this@toPerson.lastName
     )
+
+
 
 fun RemovePersonRequest.toPerson() = Person(
     id = this@toPerson.id,
@@ -96,7 +100,7 @@ fun Group.toGroupResponse() =
     )
 
 class AddPersonCommand(
-    private val storage: PersonStorage,
+    private val storage: PersonDatabaseStorage,
     private val request: AddPersonRequest
 ): Command {
     override fun execute(): PersonResponse {
@@ -139,8 +143,9 @@ class AddPersonCommand(
     }
 }
 
+
 class UpdatePersonCommand(
-    private val storage: PersonStorage,
+    private val storage: PersonInMemoryStorage,
     private val request: UpdatePersonRequest
 ) : Command {
     override fun execute(): PersonResponse {
@@ -212,7 +217,7 @@ class UpdatePersonCommand(
 }
 
 class FetchPersonCommand(
-    private val storage: PersonStorage,
+    private val storage: PersonInMemoryStorage,
     private val personId: PersonId,
 ) : Command {
     override fun execute(): PersonResponse {
@@ -252,7 +257,7 @@ class FetchPersonCommand(
 
 
 class RemovePersonCommand(
-    private val storage: PersonStorage,
+    private val storage: PersonInMemoryStorage,
     private val personId: PersonId,
 ) : Command {
     override fun execute(): Any {
@@ -282,6 +287,14 @@ class RemovePersonCommand(
         }
         val personDetail = PersonRepo.removePerson(storage, personId)
         return " contact deleted"
+    }
+}
+
+class ListPersonCommand(
+    private val storage: PersonInMemoryStorage,
+    ): Command {
+    override fun execute(): List<Person> {
+        return PersonRepo.listPersons(storage)
     }
 }
 

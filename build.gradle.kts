@@ -33,3 +33,10 @@ application {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+val exposedVersion: String by project
+dependencies {
+    implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
+    implementation("com.mysql:mysql-connector-j:8.0.31")
+}

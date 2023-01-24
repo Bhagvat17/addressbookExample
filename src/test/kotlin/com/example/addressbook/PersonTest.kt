@@ -1,9 +1,6 @@
 package com.example.addressbook
 
-import com.example.addressbook.commands.AddPersonCommand
-import com.example.addressbook.commands.FetchPersonCommand
-import com.example.addressbook.commands.RemovePersonCommand
-import com.example.addressbook.commands.UpdatePersonCommand
+import com.example.addressbook.commands.*
 import com.example.addressbook.storages.PersonInMemoryStorage
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -32,6 +29,8 @@ class PersonTest {
         Assertions.assertEquals("Vadodara", address.city)
         Assertions.assertEquals("Gujarat", address.state)
         Assertions.assertEquals("385421", address.zipcode)
+
+
     }
 
     @Test
@@ -125,4 +124,16 @@ class PersonTest {
         RemovePersonCommand(storage, personResponse.id).execute()
 
     }
+
+    @Test
+    fun listPerson():Unit{
+        val storage = PersonInMemoryStorage()
+
+        val personCreateRequest = getPersonCreateRequest()
+        val commandAddPerson = AddPersonCommand(storage, personCreateRequest)
+        val personResponse = commandAddPerson.execute()
+        println(ListPersonCommand(storage))
+    }
+
+
 }
